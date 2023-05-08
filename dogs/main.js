@@ -1,5 +1,5 @@
 console.log("hola perro");
- const URL="https://dog.ceo/api/breeds/image/random";
+ const URL="https://api.thedogapi.com/v1/images/search?api_key=live_rIW88oJU1Xc2tqHVHuGKrkpO74qT9sUeVbivdUOwJhO8tXsgjQuuDbXvLz7FXo4F";
  const URL_FACTS = "https://dog-api.kinduff.com/api/facts?number=5"
  /* fetch(URL)
     .then(res => res.json())
@@ -13,8 +13,9 @@ async function reload(){
         fetch(URL)
             .then(res => res.json())
             .then(data=> {
+                console.log(data);
                 const img = document.querySelector("img");
-                img.src = data.message;
+                img.src = data[0].url;
             })
     );
 };
