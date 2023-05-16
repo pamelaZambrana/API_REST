@@ -1,7 +1,8 @@
 console.log("hola perro");
  const URL="https://api.thedogapi.com/v1/images/search?api_key=live_rIW88oJU1Xc2tqHVHuGKrkpO74qT9sUeVbivdUOwJhO8tXsgjQuuDbXvLz7FXo4F";
- const URL_FAVOURITES="https://api.thedogapi.com/v1/favourites?api_key=live_rIW88oJU1Xc2tqHVHuGKrkpO74qT9sUeVbivdUOwJhO8tXsgjQuuDbXvLz7FXo4F";
- const URL_FAVOURITES_DELETE=(id) => (`https://api.thedogapi.com/v1/favourites/${id}?api_key=live_rIW88oJU1Xc2tqHVHuGKrkpO74qT9sUeVbivdUOwJhO8tXsgjQuuDbXvLz7FXo4F`);
+ const URL_FAVOURITES="https://api.thedogapi.com/v1/favourites";
+ const URL_UPLOAD="https://api.thedogapi.com/v1/images/upload";
+ const URL_FAVOURITES_DELETE=(id) => (`https://api.thedogapi.com/v1/favourites/${id}`);
  const URL_FACTS = "https://dogapi.dog/api/v2/facts?limit=5" 
  /* fetch(URL)
     .then(res => res.json())
@@ -28,7 +29,13 @@ async function reload(){
 /* ---------- loading Favourites images ---------- */
 async function reloadFavourites(){
     await(
-        fetch(URL_FAVOURITES)
+        fetch(
+                URL_FAVOURITES,{
+                    headers: {
+                        "X-API-KEY": "live_rIW88oJU1Xc2tqHVHuGKrkpO74qT9sUeVbivdUOwJhO8tXsgjQuuDbXvLz7FXo4F"
+                    }
+                }
+            )
             .then(res => res.json())
             .then(data=> {
                 console.log(data);
@@ -74,7 +81,8 @@ async function savingFavourites(id){
             {
             method: "POST",
             headers:{
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "X-API-KEY": "live_rIW88oJU1Xc2tqHVHuGKrkpO74qT9sUeVbivdUOwJhO8tXsgjQuuDbXvLz7FXo4F"
             },
             body: JSON.stringify({
                 image_id : id
@@ -103,7 +111,8 @@ async function deletingFavourites(id){
             {
                 method: "DELETE",
                 headers:{
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "X-API-KEY": "live_rIW88oJU1Xc2tqHVHuGKrkpO74qT9sUeVbivdUOwJhO8tXsgjQuuDbXvLz7FXo4F"
                 },
             }
         )
@@ -140,6 +149,28 @@ async function generateFacts(){
             })
     )
 }
+/* -----------Upload picture--------- */
+async function uploadingPic(){
+    const form = document.getElementById("uploadingForm");
+    const formData = new FormData(form);
+    console.log(formData.get("file"));
+    await fetch(
+        URL_UPLOAD,
+        {
+            method: "POST",
+            headers:{
+                "X-API-KEY": "live_rIW88oJU1Xc2tqHVHuGKrkpO74qT9sUeVbivdUOwJhO8tXsgjQuuDbXvLz7FXo4F"
+            },
+            body: formData
+        }
+    )
+    .then(res => {
+        console.log(res);
+        console.log(res.image_id);
+    })
+    .catch(error => console.log(error))
+}
+
 
 reload();
 reloadFavourites();
